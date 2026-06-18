@@ -1,6 +1,8 @@
 package com.chema.db.miniblog.service;
 
 import com.chema.db.miniblog.model.Post;
+import com.chema.db.miniblog.model.User;
+import com.chema.db.miniblog.repository.UserRepository;
 import com.chema.db.miniblog.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +12,12 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository) { this.postRepository = postRepository; }
+    public PostService(PostRepository postRepository,  UserRepository userRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<Post> getAllPosts() { return postRepository.findAll(); }
 
@@ -21,7 +27,17 @@ public class PostService {
                         new RuntimeException("Post not found"));
     }
 
-    public Post createPost(Post post) { return postRepository.save(post); }
+    public Post createPost(Post post) {
+        Long authorId = post.getAutor().getId();
+
+        User author = userRepository.findById(authorId)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found with id: " + authorId));
+
+        post.setAutor(author);
+
+        return postRepository.save(post);
+    }
 
     public Post updatePost(Long id, Post updatedPost) {
         return postRepository.findById(id)
