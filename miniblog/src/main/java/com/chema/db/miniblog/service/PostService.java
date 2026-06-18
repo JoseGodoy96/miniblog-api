@@ -13,7 +13,7 @@ public class PostService {
 
     public PostService(PostRepository postRepository) { this.postRepository = postRepository; }
 
-    public List<Post> getAllPost() { return postRepository.findAll(); }
+    public List<Post> getAllPosts() { return postRepository.findAll(); }
 
     public Post getPostById(Long id) {
         return postRepository.findById(id)

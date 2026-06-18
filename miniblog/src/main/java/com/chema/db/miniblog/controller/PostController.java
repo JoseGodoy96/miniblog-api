@@ -15,7 +15,7 @@ public class PostController {
     public PostController(PostService postService) {this.postService = postService;}
 
     @GetMapping
-    public List<Post> findAll() { return postService.getAllPost(); }
+    public List<Post> findAll() { return postService.getAllPosts(); }
 
     @GetMapping("/{id}")
     public Post findOne(@PathVariable Long id) { return postService.getPostById(id); }
