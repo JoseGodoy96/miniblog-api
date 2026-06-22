@@ -1,5 +1,6 @@
 package com.chema.db.miniblog.service;
 
+import com.chema.db.miniblog.exception.ResourceNotFoundException;
 import com.chema.db.miniblog.model.User;
 import com.chema.db.miniblog.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException("User", id));
     }
 
     public User createUser(User user) {
@@ -40,7 +41,7 @@ public class UserService {
                     return userRepository.save(user);
                 })
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new ResourceNotFoundException("User", id));
     }
 
     public void deleteUser(Long id) {

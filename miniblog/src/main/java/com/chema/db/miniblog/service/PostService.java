@@ -1,5 +1,6 @@
 package com.chema.db.miniblog.service;
 
+import com.chema.db.miniblog.exception.ResourceNotFoundException;
 import com.chema.db.miniblog.model.Post;
 import com.chema.db.miniblog.model.User;
 import com.chema.db.miniblog.repository.UserRepository;
@@ -24,7 +25,7 @@ public class PostService {
     public Post getPostById(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Post not found"));
+                        new ResourceNotFoundException("Post", id));
     }
 
     public Post createPost(Post post) {
@@ -32,7 +33,7 @@ public class PostService {
 
         User author = userRepository.findById(authorId)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found with id: " + authorId));
+                        new ResourceNotFoundException("User", authorId));
 
         post.setAutor(author);
 
@@ -48,7 +49,7 @@ public class PostService {
                     return postRepository.save(post);
                 })
                 .orElseThrow(() ->
-                        new RuntimeException("Post not found"));
+                        new ResourceNotFoundException("Post", id));
     }
 
     public void deletePost(Long id) { postRepository.deleteById(id); }

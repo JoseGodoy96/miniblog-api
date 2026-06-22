@@ -1,5 +1,6 @@
 package com.chema.db.miniblog.service;
 
+import com.chema.db.miniblog.exception.ResourceNotFoundException;
 import com.chema.db.miniblog.model.Comment;
 import com.chema.db.miniblog.model.Post;
 import com.chema.db.miniblog.model.User;
@@ -28,7 +29,7 @@ public class CommentService {
     public Comment getCommentById(Long id) {
         return commentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Comment not found"));
+                        new ResourceNotFoundException("Comment", id));
     }
 
     public Comment createComment(Comment comment) {
@@ -36,13 +37,13 @@ public class CommentService {
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(() ->
-                    new RuntimeException("Post not found with id: " + postId));
+                    new ResourceNotFoundException("Post", postId));
 
         Long authorId = comment.getAutor().getId();
 
         User author = userRepository.findById(authorId)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found with id: " + authorId));
+                        new ResourceNotFoundException("User", authorId));
 
         comment.setPost(post);
         comment.setAutor(author);
@@ -58,7 +59,7 @@ public class CommentService {
                     return commentRepository.save(comment);
                 })
                 .orElseThrow(() ->
-                        new RuntimeException("Comment not found"));
+                        new ResourceNotFoundException("Comment", id));
     }
 
     public void deleteComment(Long id) {commentRepository.deleteById(id);}
