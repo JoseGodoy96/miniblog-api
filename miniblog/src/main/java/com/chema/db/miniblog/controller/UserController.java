@@ -2,6 +2,7 @@ package com.chema.db.miniblog.controller;
 
 import com.chema.db.miniblog.model.User;
 import com.chema.db.miniblog.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,12 +28,12 @@ public class UserController {
     }
 
     @PostMapping
-    public User save(@RequestBody User user) {
+    public User save(@Valid @RequestBody User user) {
         return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @RequestBody User user) {
+    public User update(@PathVariable Long id, @Valid @RequestBody User user) {
         return userService.updateUser(id, user);
     }
 

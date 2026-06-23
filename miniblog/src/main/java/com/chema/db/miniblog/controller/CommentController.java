@@ -2,6 +2,7 @@ package com.chema.db.miniblog.controller;
 
 import com.chema.db.miniblog.model.Comment;
 import com.chema.db.miniblog.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +22,10 @@ public class CommentController {
     public Comment findOne(@PathVariable Long id) { return commentService.getCommentById(id); }
 
     @PostMapping
-    public Comment create(@RequestBody Comment comment) { return commentService.createComment(comment); }
+    public Comment create(@Valid @RequestBody Comment comment) { return commentService.createComment(comment); }
 
     @PutMapping("/{id}")
-    public Comment update(@PathVariable Long id, @RequestBody Comment comment) { return commentService.updateComment(id, comment); }
+    public Comment update(@PathVariable Long id, @Valid @RequestBody Comment comment) { return commentService.updateComment(id, comment); }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) { commentService.deleteComment(id); }

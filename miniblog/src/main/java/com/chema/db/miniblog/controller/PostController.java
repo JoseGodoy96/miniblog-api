@@ -2,6 +2,7 @@ package com.chema.db.miniblog.controller;
 
 import com.chema.db.miniblog.model.Post;
 import com.chema.db.miniblog.service.PostService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,10 +22,10 @@ public class PostController {
     public Post findOne(@PathVariable Long id) { return postService.getPostById(id); }
 
     @PostMapping
-    public Post create(@RequestBody Post post) { return postService.createPost(post); }
+    public Post create(@Valid @RequestBody Post post) { return postService.createPost(post); }
 
     @PutMapping("/{id}")
-    public Post update(@PathVariable Long id, @RequestBody Post post) { return postService.updatePost(id, post); }
+    public Post update(@PathVariable Long id, @Valid @RequestBody Post post) { return postService.updatePost(id, post); }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {postService.deletePost(id);}
