@@ -1,7 +1,8 @@
 package com.chema.db.miniblog.controller;
 
-import com.chema.db.miniblog.model.User;
 import com.chema.db.miniblog.service.UserService;
+import com.chema.db.miniblog.dto.UserRequest;
+import com.chema.db.miniblog.dto.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,27 +19,27 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> findAll() {
+    public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public User findOne(@PathVariable Long id) {
+    public UserResponse getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @PostMapping
-    public User save(@Valid @RequestBody User user) {
-        return userService.createUser(user);
+        public UserResponse createUser(@Valid @RequestBody UserRequest request) {
+        return userService.createUser(request);
     }
 
     @PutMapping("/{id}")
-    public User update(@PathVariable Long id, @Valid @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public UserResponse updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest request) {
+        return userService.updateUser(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 }

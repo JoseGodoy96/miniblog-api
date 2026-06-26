@@ -4,7 +4,6 @@ import com.chema.db.miniblog.dto.UserRequest;
 import com.chema.db.miniblog.dto.UserResponse;
 import com.chema.db.miniblog.exception.ResourceNotFoundException;
 import com.chema.db.miniblog.model.User;
-import com.chema.db.miniblog.service.UserMapper;
 import com.chema.db.miniblog.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,36 +19,36 @@ public class UserService {
     }
 
     public List<UserResponse> getAllUsers() {
-        return UserRepository.findAll()
+        return userRepository.findAll()
                 .stream()
-                .map(this::toResponse)
+                .map(UserMapper::toResponse)
                 .toList();
     }
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User", id));
+        return UserMapper.toResponse(user);
     }
 
     public UserResponse createUser(UserRequest request) {
         User user = UserMapper.toEntity(request);
-        User savedUser = UserRepository.save(user);
+        User savedUser = userRepository.save(user);
         return UserMapper.toResponse(savedUser);
     }
 
-    public User updateUser(Long id, User updatedUser) {
+    public UserResponse updateUser(Long id, UserRequest request) {
 
-        return userRepository.findById(id)
-                .map(user -> {
-
-                    user.setUsername(updatedUser.getUsername());
-                    user.setEmail(updatedUser.getEmail());
-
-                    return userRepository.save(user);
-                })
+        User user = userRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User", id));
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+
+        User updatedUser = userRepository.save(user);
+
+        return UserMapper.toResponse(updatedUser);
     }
 
     public void deleteUser(Long id) {
