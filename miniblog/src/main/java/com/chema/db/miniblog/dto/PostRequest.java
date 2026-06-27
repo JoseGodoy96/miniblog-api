@@ -1,6 +1,5 @@
 package com.chema.db.miniblog.dto;
 
-import com.chema.db.miniblog.model.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -17,5 +16,5 @@ public class PostRequest {
     private String content;
 
     @NotNull(message = "autorId is required")
-    private User autor;
+    private Long autorId;
 }
