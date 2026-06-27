@@ -1,10 +1,12 @@
 package com.chema.db.miniblog.service;
 
-import com.chema.db.miniblog.exception.ResourceNotFoundException;
-import com.chema.db.miniblog.model.Post;
 import com.chema.db.miniblog.model.User;
 import com.chema.db.miniblog.repository.UserRepository;
+import com.chema.db.miniblog.model.Post;
 import com.chema.db.miniblog.repository.PostRepository;
+import com.chema.db.miniblog.dto.PostRequest;
+import com.chema.db.miniblog.dto.PostResponse;
+import com.chema.db.miniblog.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,16 +22,24 @@ public class PostService {
         this.userRepository = userRepository;
     }
 
-    public List<Post> getAllPosts() { return postRepository.findAll(); }
-
-    public Post getPostById(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Post", id));
+    public List<PostResponse> getAllPosts() {
+        return postRepository.findAll()
+                .stream()
+                .map(PostMapper::toResponse)
+                .toList();
     }
 
-    public Post createPost(Post post) {
-        Long authorId = post.getAutor().getId();
+    public PostResponse getPostById(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Post", id));
+
+        return PostMapper.toResponse(post);
+    }
+
+    public PostResponse createPost(PostRequest request) {
+        Post post = PostMapper.toEntity(request);
+        Long authorId = request.getAutorId();
 
         User author = userRepository.findById(authorId)
                 .orElseThrow(() ->
@@ -37,19 +47,21 @@ public class PostService {
 
         post.setAutor(author);
 
-        return postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+        return PostMapper.toResponse(savedPost);
     }
 
-    public Post updatePost(Long id, Post updatedPost) {
-        return postRepository.findById(id)
-                .map(post -> {
-                    post.setTitle(updatedPost.getTitle());
-                    post.setContent(updatedPost.getContent());
+    public PostResponse updatePost(Long id, PostRequest request) {
 
-                    return postRepository.save(post);
-                })
+        Post post = postRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Post", id));
+        post.setTitle(request.getTitle());
+        post.setContent(request.getContent());
+
+        Post updatedPost = postRepository.save(post);
+
+        return PostMapper.toResponse(updatedPost);
     }
 
     public void deletePost(Long id) { postRepository.deleteById(id); }

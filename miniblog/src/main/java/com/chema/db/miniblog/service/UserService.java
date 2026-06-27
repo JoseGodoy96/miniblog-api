@@ -1,10 +1,10 @@
 package com.chema.db.miniblog.service;
 
+import com.chema.db.miniblog.model.User;
+import com.chema.db.miniblog.repository.UserRepository;
 import com.chema.db.miniblog.dto.UserRequest;
 import com.chema.db.miniblog.dto.UserResponse;
 import com.chema.db.miniblog.exception.ResourceNotFoundException;
-import com.chema.db.miniblog.model.User;
-import com.chema.db.miniblog.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
