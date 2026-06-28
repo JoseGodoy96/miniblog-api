@@ -8,11 +8,9 @@ import lombok.Setter;
 public class CommentResponse {
 
     private Long id;
-    private String title;
     private String content;
     private Long autorId;
     private String autorUsername;
     private Long postId;
     private String postTitle;
-    private String postContent;
 }

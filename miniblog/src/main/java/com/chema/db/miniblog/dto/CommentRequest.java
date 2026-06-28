@@ -1,7 +1,7 @@
 package com.chema.db.miniblog.dto;
 
-import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +12,9 @@ public class CommentRequest {
     @NotBlank(message = "content is required")
     private String content;
 
-    @JoinColumn(name = "post_id")
+    @NotNull(message = "postId is required")
     private Long postId;
 
-    @JoinColumn(name = "autor_id")
+    @NotNull(message = "autorId is required")
     private Long autorId;
 }
