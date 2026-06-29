@@ -1,12 +1,14 @@
 package com.chema.db.miniblog.service;
 
-import com.chema.db.miniblog.exception.ResourceNotFoundException;
-import com.chema.db.miniblog.model.Comment;
-import com.chema.db.miniblog.model.Post;
 import com.chema.db.miniblog.model.User;
-import com.chema.db.miniblog.repository.CommentRepository;
 import com.chema.db.miniblog.repository.UserRepository;
+import com.chema.db.miniblog.model.Post;
 import com.chema.db.miniblog.repository.PostRepository;
+import com.chema.db.miniblog.model.Comment;
+import com.chema.db.miniblog.repository.CommentRepository;
+import com.chema.db.miniblog.dto.CommentRequest;
+import com.chema.db.miniblog.dto.CommentResponse;
+import com.chema.db.miniblog.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,22 +26,29 @@ public class CommentService {
         this.postRepository = postRepository;
     }
 
-    public List<Comment> getAllComments() { return commentRepository.findAll(); }
-
-    public Comment getCommentById(Long id) {
-        return commentRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Comment", id));
+    public List<CommentResponse> getAllComments() {
+        return commentRepository.findAll()
+                .stream()
+                .map(CommentMapper::toResponse)
+                .toList();
     }
 
-    public Comment createComment(Comment comment) {
-        Long postId = comment.getPost().getId();
+    public CommentResponse getCommentById(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Comment", id));
+        return CommentMapper.toResponse(comment);
+    }
+
+    public CommentResponse createComment(CommentRequest request) {
+        Comment comment = CommentMapper.toEntity(request);
+        Long postId = request.getPostId();
 
         Post post = postRepository.findById(postId)
                 .orElseThrow(() ->
                     new ResourceNotFoundException("Post", postId));
 
-        Long authorId = comment.getAutor().getId();
+        Long authorId = request.getAutorId();
 
         User author = userRepository.findById(authorId)
                 .orElseThrow(() ->
@@ -48,18 +57,17 @@ public class CommentService {
         comment.setPost(post);
         comment.setAutor(author);
 
-        return commentRepository.save(comment);
+        Comment savedComment = commentRepository.save(comment);
+        return CommentMapper.toResponse(savedComment);
     }
 
-    public Comment updateComment(Long id, Comment updatedComment) {
-        return commentRepository.findById(id)
-                .map(comment -> {
-                    comment.setContent(updatedComment.getContent());
-
-                    return commentRepository.save(comment);
-                })
+    public CommentResponse updateComment(Long id, CommentRequest request) {
+        Comment comment = commentRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Comment", id));
+        comment.setContent(request.getContent());
+        Comment savedComment = commentRepository.save(comment);
+        return CommentMapper.toResponse(savedComment);
     }
 
     public void deleteComment(Long id) {commentRepository.deleteById(id);}
