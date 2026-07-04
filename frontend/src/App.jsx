@@ -22,12 +22,21 @@ function App() {
 	}, [])
 
 	const crearUsuario = () => {
+	if (nuevoUsername.trim() === '' || nuevoEmail.trim() === '') {
+    console.error('Faltan campos por rellenar')
+	return
+	}
 	fetch('http://localhost:8080/api/user', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: nuevoUsername, email: nuevoEmail })
 	})
-    .then((response) => response.json())
+    .then((response) => {
+    if (!response.ok) {
+        throw new Error('El servidor rechazó la petición')
+    }
+    return response.json()
+    })
     .then((nuevo) => {
 		setUsers([...users, nuevo])
 		setNuevoUsername('')
@@ -38,7 +47,7 @@ function App() {
 
 	return (
 	<>
-    	<h1>Mini Blog</h1>
+	<h1>Mini Blog</h1>
 		<h2>Usuarios</h2>
 		<ul>
 			{users.map((user) => (
