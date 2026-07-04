@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react'
 function App() {
 	const [users, setUsers] = useState([])
 	const [posts, setPosts] = useState([])
+	const [nuevoUsername, setNuevoUsername] = useState('')
+	const [nuevoEmail, setNuevoEmail] = useState('')
+	
 
 	useEffect(() => {
 		fetch('http://localhost:8080/api/user')
@@ -18,6 +21,21 @@ function App() {
 		.catch((error) => console.error('Error al cargar los posts', error))
 	}, [])
 
+	const crearUsuario = () => {
+	fetch('http://localhost:8080/api/user', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: nuevoUsername, email: nuevoEmail })
+	})
+    .then((response) => response.json())
+    .then((nuevo) => {
+		setUsers([...users, nuevo])
+		setNuevoUsername('')
+		setNuevoEmail('')
+    })
+    .catch((error) => console.error('Error al crear usuario:', error))
+}
+
 	return (
 	<>
     	<h1>Mini Blog</h1>
@@ -29,6 +47,10 @@ function App() {
 				</li>
 			))}
 		</ul>
+		<h2>Nuevo usuario</h2>
+		<input value={nuevoUsername} onChange={(e) => setNuevoUsername(e.target.value)} type="text" placeholder='Nombre Usuario'/>
+		<input value={nuevoEmail} onChange={(e) => setNuevoEmail(e.target.value)} type="email" placeholder='Email'/>
+		<button onClick={crearUsuario}>Enviar</button>
 		<h2>Posts</h2>
 		<ul>
 			{posts.map((post) => (
