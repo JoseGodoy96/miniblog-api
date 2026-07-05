@@ -94,7 +94,7 @@ function App() {
 		<ul>
 			{posts.map((post) => (
 				<li key={post.id}>
-					{post.title} - {post.autorUsername}
+					{post.title} - {post.content} - {post.autorUsername}
 				</li>
 			))}
 		</ul>
