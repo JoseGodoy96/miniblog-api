@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import UserList from './components/UserList'
 import PostList from './components/PostList'
+import UserForm from './components/UserForm'
+import PostForm from './components/PostForm'
 
 function App() {
 	const [users, setUsers] = useState([])
@@ -83,23 +85,26 @@ function App() {
 		<h2>Usuarios</h2>
 		<UserList users={users} />
 		<h2>Nuevo usuario</h2>
-		<input value={nuevoUsername} onChange={(e) => setNuevoUsername(e.target.value)} type="text" placeholder='Nombre Usuario'/>
-		<input value={nuevoEmail} onChange={(e) => setNuevoEmail(e.target.value)} type="email" placeholder='Email'/>
-		<button onClick={crearUsuario}>Enviar</button>
+		<UserForm
+			nuevoUsername={nuevoUsername}
+			setNuevoUsername={setNuevoUsername}
+			nuevoEmail={nuevoEmail}
+			setNuevoEmail={setNuevoEmail}
+			crearUsuario={crearUsuario}
+			/>
 		<h2>Posts</h2>
 		<PostList posts={posts} />
 		<h2>Nuevo posts</h2>
-		<input value={nuevoTitle} onChange={(e) => setNuevoTitle(e.target.value)} type="text" placeholder='Titulo'/>
-		<input value={nuevoContent} onChange={(e) => setNuevoContent(e.target.value)} type="text" placeholder='Escribe aqui...'/>
-		<select value={autorSeleccionado} onChange={(e) => setAutorSeleccionado(e.target.value)}>
-			<option value="">-- Elige un autor --</option>
-			{users.map((user) => (
-				<option key={user.id} value={user.id}>
-					{user.username}
-				</option>
-			))}
-		</select>
-		<button onClick={crearPost}>Enviar</button>
+		<PostForm
+			nuevoTitle={nuevoTitle}
+			setNuevoTitle={setNuevoTitle}
+			nuevoContent={nuevoContent}
+			setNuevoContent={setNuevoContent}
+			autorSeleccionado={autorSeleccionado}
+			setAutorSeleccionado={setAutorSeleccionado}
+			users={users}
+			crearPost={crearPost}
+		/>
     </>
 	)
 }
