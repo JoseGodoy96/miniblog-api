@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import UserList from './components/UserList'
 
 function App() {
 	const [users, setUsers] = useState([])
@@ -79,13 +80,7 @@ function App() {
 	<>
 		<h1>Mini Blog</h1>
 		<h2>Usuarios</h2>
-		<ul>
-			{users.map((user) => (
-				<li key={user.id}>
-					{user.username} - {user.email}
-				</li>
-			))}
-		</ul>
+		<UserList users={users} />
 		<h2>Nuevo usuario</h2>
 		<input value={nuevoUsername} onChange={(e) => setNuevoUsername(e.target.value)} type="text" placeholder='Nombre Usuario'/>
 		<input value={nuevoEmail} onChange={(e) => setNuevoEmail(e.target.value)} type="email" placeholder='Email'/>
