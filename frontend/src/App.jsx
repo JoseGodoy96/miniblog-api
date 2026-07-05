@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import UserList from './components/UserList'
+import PostList from './components/PostList'
 
 function App() {
 	const [users, setUsers] = useState([])
@@ -86,13 +87,7 @@ function App() {
 		<input value={nuevoEmail} onChange={(e) => setNuevoEmail(e.target.value)} type="email" placeholder='Email'/>
 		<button onClick={crearUsuario}>Enviar</button>
 		<h2>Posts</h2>
-		<ul>
-			{posts.map((post) => (
-				<li key={post.id}>
-					{post.title} - {post.content} - {post.autorUsername}
-				</li>
-			))}
-		</ul>
+		<PostList posts={posts} />
 		<h2>Nuevo posts</h2>
 		<input value={nuevoTitle} onChange={(e) => setNuevoTitle(e.target.value)} type="text" placeholder='Titulo'/>
 		<input value={nuevoContent} onChange={(e) => setNuevoContent(e.target.value)} type="text" placeholder='Escribe aqui...'/>
