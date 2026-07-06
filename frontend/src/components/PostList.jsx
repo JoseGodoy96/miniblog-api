@@ -1,10 +1,10 @@
-function PostList({ posts, borrarPosts }) {
+function PostList({ posts, borrarPost }) {
 	return (
 	<ul>
 		{posts.map((post) => (
         <li key={post.id}>
 			{post.title} - {post.content} - {post.autorUsername}
-			<button onClick={() => borrarPosts(post.id)}>Eliminar</button>
+			<button onClick={() => borrarPost(post.id)}>Eliminar</button>
         </li>
 		))}
     </ul>
