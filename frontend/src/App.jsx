@@ -92,6 +92,19 @@ function App() {
 		.catch((error) => console.error('Error al borrar usuario:', error))
 	}
 
+	const borrarPost = (id) => {
+		fetch(`http://localhost:8080/api/post/${id}`, {
+			method: 'DELETE'
+		})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error('No se pudo borrar')
+			}
+			setPosts(posts.filter((post) => post.id !== id))
+		})
+		.catch((error) => console.error('Error al borrar usuario:', error))
+	}
+
 
 	return (
 	<>
@@ -107,7 +120,7 @@ function App() {
 			crearUsuario={crearUsuario}
 			/>
 		<h2>Posts</h2>
-		<PostList posts={posts} />
+		<PostList posts={posts} borrarPost={borrarPost} />
 		<h2>Nuevo posts</h2>
 		<PostForm
 			nuevoTitle={nuevoTitle}
