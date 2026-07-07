@@ -106,12 +106,51 @@ function App() {
 		.catch((error) => console.error('Error al borrar usuario:', error))
 	}
 
+	const actualizarUsuario = () => {
+		if (nuevoUsername.trim() === '' || nuevoEmail.trim() === '') {
+			console.error('Faltan campos por rellenar')
+			return
+		}
+		fetch(`http://localhost:8080/api/user/${editandoId}`, {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ username: nuevoUsername, email: nuevoEmail })
+		})
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error('El servidor rechazó la petición')
+			}
+			return response.json()
+		})
+		.then((actualizado) => {
+			setUsers(
+				users.map((user) => {
+					if (user.id === editandoId) {
+						return actualizado;
+					}
+					return user;
+				})
+			);
+			setNuevoUsername('')
+			setNuevoEmail('')
+			setEditandoId(null)
+		})
+		.catch((error) => console.error('Error al actualizar usuario:', error))
+}
+
 	const empezarEdicion = (user) => {
 		setNuevoUsername(user.username)
 		setNuevoEmail(user.email)
 		setEditandoId(user.id)
 	}
 
+	const guardarUsuario = () => {
+		if (editandoId === null) {
+			crearUsuario()
+		} else {
+			actualizarUsuario()
+		}
+	}
 
 	return (
 	<>
