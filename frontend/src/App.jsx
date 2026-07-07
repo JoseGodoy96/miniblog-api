@@ -12,6 +12,7 @@ function App() {
 	const [nuevoTitle, setNuevoTitle] = useState('')
 	const [nuevoContent, setNuevoContent] = useState('')
 	const [autorSeleccionado, setAutorSeleccionado] = useState('')
+	const [editandoId, setEditandoId] = useState(null)
 	
 
 	useEffect(() => {
@@ -103,6 +104,12 @@ function App() {
 			setPosts(posts.filter((post) => post.id !== id))
 		})
 		.catch((error) => console.error('Error al borrar usuario:', error))
+	}
+
+	const empezarEdicion = (user) => {
+		setNuevoUsername(user.username)
+		setNuevoEmail(user.email)
+		setEditandoId(user.id)
 	}
 
 
