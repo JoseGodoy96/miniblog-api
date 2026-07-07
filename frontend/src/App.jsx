@@ -156,14 +156,15 @@ function App() {
 	<>
 		<h1>Mini Blog</h1>
 		<h2>Usuarios</h2>
-		<UserList users={users} borrarUsuario={borrarUsuario} />
+		<UserList users={users} borrarUsuario={borrarUsuario} empezarEdicion={empezarEdicion} />
 		<h2>Nuevo usuario</h2>
 		<UserForm
 			nuevoUsername={nuevoUsername}
 			setNuevoUsername={setNuevoUsername}
 			nuevoEmail={nuevoEmail}
 			setNuevoEmail={setNuevoEmail}
-			crearUsuario={crearUsuario}
+			guardarUsuario={guardarUsuario}
+			editandoId={editandoId}
 			/>
 		<h2>Posts</h2>
 		<PostList posts={posts} borrarPost={borrarPost} />
