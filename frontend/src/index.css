@@ -21,3 +21,26 @@ h2 {
 	color: #374151;
 	margin-top: 2rem;
 }
+
+button {
+	background-color: #2563eb;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	margin: 0.2rem;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+button:hover {
+	background-color: #1d4ed8;
+}
+
+button.eliminar {
+	background-color: #dc2626;
+}
+
+button.eliminar:hover {
+	background-color: #b91c1c;
+}
