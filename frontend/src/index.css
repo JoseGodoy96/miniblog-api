@@ -60,3 +60,16 @@ li {
 	align-items: center;
 	gap: 0.5rem;
 }
+
+input, select {
+	padding: 0.5rem;
+	margin: 0.2rem;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	font-size: 0.9rem;
+}
+
+input:focus, select:focus {
+	outline: none;
+	border-color: #2563eb;
+}
