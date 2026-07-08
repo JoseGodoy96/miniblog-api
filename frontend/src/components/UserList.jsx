@@ -5,7 +5,7 @@ function UserList({ users, borrarUsuario, empezarEdicion }) {
         <li key={user.id}>
 			{user.username} - {user.email}
 			<button onClick={() => empezarEdicion(user)}>Editar</button>
-			<button onClick={() => borrarUsuario(user.id)}>Eliminar</button>
+			<button onClick={() => borrarUsuario(user.id)} className="eliminar">Eliminar</button>
         </li>
 		))}
     </ul>

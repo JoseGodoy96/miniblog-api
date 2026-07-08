@@ -4,7 +4,7 @@ function PostList({ posts, borrarPost }) {
 		{posts.map((post) => (
         <li key={post.id}>
 			{post.title} - {post.content} - {post.autorUsername}
-			<button onClick={() => borrarPost(post.id)}>Eliminar</button>
+			<button onClick={() => borrarPost(post.id)} className="eliminar">Eliminar</button>
         </li>
 		))}
     </ul>
